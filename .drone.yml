@@ -1,13 +1,17 @@
+workspace:
+  base: /srv/drone-demo
+  path: .
+
 pipeline:
   build:
-    image: golang
-    commands:
-      - go get
-      - go build
-      - go test
-
-services:
-  postgres:
-    image: postgres:9.4.5
-    environment:
-      - POSTGRES_USER=myapp
+     image: golang:alpine
+     # pull: true
+     environment:
+       - KEY=VALUE
+     secrets: [key1, key2]
+     commands:
+       - echo $$KEY
+       - pwd
+       - ls
+       - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+       - ./app
